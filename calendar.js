@@ -153,7 +153,10 @@ function showToast(msg) {
 
 /* Called by the timer when a full workout finishes */
 function onWorkoutComplete() {
-  setStamp(getTodayStr(), 'weight');
+  // Merge with an existing stamp: cardio/both + weight workout => both
+  const today = getTodayStr();
+  const existing = getStamp(today);
+  setStamp(today, existing === 'cardio' || existing === 'both' ? 'both' : 'weight');
   showToast('Workout logged!');
 }
 
