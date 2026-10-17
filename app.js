@@ -10,9 +10,9 @@ const state = {
   currentSet: 1,
   timeLeft: 0,
   totalTimeLeft: 0,
-  exerciseTime: 30,
-  restTime: 10,
-  exercises: 4,
+  exerciseTime: 45,
+  restTime: 30,
+  exercises: 3,
   sets: 3,
 };
 
