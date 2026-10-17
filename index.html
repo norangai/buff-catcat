@@ -1,69 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fff7fb">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css">
-  <title>Workout Timer</title>
-</head>
-<body>
-  <main>
-    <section id="config">
-      <img class="cat-illustration" src="cats/cat_1_initial.png" alt="Cat ready to start a workout">
-      <h1>Workout Timer</h1>
-      <label>Exercise time (s) <input id="exerciseTime" type="number" min="1" value="45" inputmode="numeric"></label>
-      <label>Rest time (s) <input id="restTime" type="number" min="0" value="30" inputmode="numeric"></label>
-      <label>Number of exercises <input id="exercises" type="number" min="1" value="3" inputmode="numeric"></label>
-      <label>Number of sets <input id="sets" type="number" min="1" value="3" inputmode="numeric"></label>
-      <button id="start" class="primary">Start Workout</button>
-      <button id="openCalendar">Calendar</button>
-    </section>
-    <section id="workout" hidden>
-      <img id="workoutCat" class="cat-illustration" src="cats/cat_1_initial.png" alt="Workout cat">
-      <div id="phase">Exercise</div>
-      <div id="countdown">00:00</div>
-      <div id="progressText">Exercise 1 / 3 · Set 1 of 3</div>
-      <div id="bar"><div id="barFill"></div></div>
-      <div id="total">Total remaining: 00:00</div>
-      <div class="row">
-        <button id="toggle" class="primary">Pause</button>
-        <button id="reset">Reset</button>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#fff7fb">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Workout Timer</title>
+  </head>
+  <body>
+    <main>
+      <section id="config">
+        <img class="cat-illustration" src="cats/cat_1_initial.png"
+          alt="Cat ready to start a workout">
+        <h1>Make the cat BUFF!</h1>
+        <label>Exercise time (s) <input id="exerciseTime" type="number" min="1"
+            value="45" inputmode="numeric"></label>
+        <label>Rest time (s) <input id="restTime" type="number" min="0"
+            value="30" inputmode="numeric"></label>
+        <label>Number of exercises <input id="exercises" type="number" min="1"
+            value="3" inputmode="numeric"></label>
+        <label>Number of sets <input id="sets" type="number" min="1" value="3"
+            inputmode="numeric"></label>
+        <button id="start" class="primary">Start Workout</button>
+        <button id="openCalendar">Calendar</button>
+      </section>
+      <section id="workout" hidden>
+        <img id="workoutCat" class="cat-illustration"
+          src="cats/cat_1_initial.png" alt="Workout cat">
+        <div id="phase">Exercise</div>
+        <div id="countdown">00:00</div>
+        <div id="progressText">Exercise 1 / 3 · Set 1 of 3</div>
+        <div id="bar"><div id="barFill"></div></div>
+        <div id="total">Total remaining: 00:00</div>
+        <div class="row">
+          <button id="toggle" class="primary">Pause</button>
+          <button id="reset">Reset</button>
+        </div>
+      </section>
+      <section id="calendar" hidden>
+        <header class="cal-header">
+          <button id="calBack" aria-label="Back to timer">&larr;</button>
+          <h1>Calendar</h1>
+        </header>
+        <div class="cal-nav">
+          <button id="calPrev" aria-label="Previous month">&larr;</button>
+          <div id="calTitle" aria-live="polite"></div>
+          <button id="calNext" aria-label="Next month">&rarr;</button>
+        </div>
+        <div class="cal-weekdays"
+          aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div id="calGrid" class="cal-grid" role="grid"></div>
+        <div class="cal-legend">
+          <span><i class="dot weight"></i>Weight</span>
+          <span><i class="dot cardio"></i>Cardio</span>
+          <span><i class="dot both"></i>Both</span>
+        </div>
+      </section>
+    </main>
+    <div id="stampModal" class="modal" hidden>
+      <div class="sheet" role="dialog" aria-modal="true"
+        aria-labelledby="stampTitle">
+        <h2 id="stampTitle"></h2>
+        <button data-type="weight" class="choice"><i
+            class="dot weight"></i>Weight Training</button>
+        <button data-type="cardio" class="choice"><i
+            class="dot cardio"></i>Cardio</button>
+        <button data-type="both" class="choice"><i
+            class="dot both"></i>Both</button>
+        <button id="stampClear" class="choice">Clear Stamp</button>
+        <button id="stampCancel">Cancel</button>
       </div>
-    </section>
-    <section id="calendar" hidden>
-      <header class="cal-header">
-        <button id="calBack" aria-label="Back to timer">&larr;</button>
-        <h1>Calendar</h1>
-      </header>
-      <div class="cal-nav">
-        <button id="calPrev" aria-label="Previous month">&larr;</button>
-        <div id="calTitle" aria-live="polite"></div>
-        <button id="calNext" aria-label="Next month">&rarr;</button>
-      </div>
-      <div class="cal-weekdays" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
-      <div id="calGrid" class="cal-grid" role="grid"></div>
-      <div class="cal-legend">
-        <span><i class="dot weight"></i>Weight</span>
-        <span><i class="dot cardio"></i>Cardio</span>
-        <span><i class="dot both"></i>Both</span>
-      </div>
-    </section>
-  </main>
-  <div id="stampModal" class="modal" hidden>
-    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="stampTitle">
-      <h2 id="stampTitle"></h2>
-      <button data-type="weight" class="choice"><i class="dot weight"></i>Weight Training</button>
-      <button data-type="cardio" class="choice"><i class="dot cardio"></i>Cardio</button>
-      <button data-type="both" class="choice"><i class="dot both"></i>Both</button>
-      <button id="stampClear" class="choice">Clear Stamp</button>
-      <button id="stampCancel">Cancel</button>
     </div>
-  </div>
-  <div id="toast" role="status" aria-live="polite" hidden></div>
-  <script src="calendar.js"></script>
-  <script src="app.js"></script>
-</body>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+    <script src="calendar.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
