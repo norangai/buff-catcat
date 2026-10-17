@@ -18,6 +18,7 @@
       <label>Number of exercises <input id="exercises" type="number" min="1" value="3" inputmode="numeric"></label>
       <label>Number of sets <input id="sets" type="number" min="1" value="3" inputmode="numeric"></label>
       <button id="start" class="primary">Start Workout</button>
+      <button id="openCalendar">Calendar</button>
     </section>
     <section id="workout" hidden>
       <div id="phase">Exercise</div>
@@ -30,7 +31,37 @@
         <button id="reset">Reset</button>
       </div>
     </section>
+    <section id="calendar" hidden>
+      <header class="cal-header">
+        <button id="calBack" aria-label="Back to timer">&larr;</button>
+        <h1>Calendar</h1>
+      </header>
+      <div class="cal-nav">
+        <button id="calPrev" aria-label="Previous month">&larr;</button>
+        <div id="calTitle" aria-live="polite"></div>
+        <button id="calNext" aria-label="Next month">&rarr;</button>
+      </div>
+      <div class="cal-weekdays" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+      <div id="calGrid" class="cal-grid" role="grid"></div>
+      <div class="cal-legend">
+        <span><i class="dot weight"></i>Weight</span>
+        <span><i class="dot cardio"></i>Cardio</span>
+        <span><i class="dot both"></i>Both</span>
+      </div>
+    </section>
   </main>
+  <div id="stampModal" class="modal" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="stampTitle">
+      <h2 id="stampTitle"></h2>
+      <button data-type="weight" class="choice"><i class="dot weight"></i>Weight Training</button>
+      <button data-type="cardio" class="choice"><i class="dot cardio"></i>Cardio</button>
+      <button data-type="both" class="choice"><i class="dot both"></i>Both</button>
+      <button id="stampClear" class="choice">Clear Stamp</button>
+      <button id="stampCancel">Cancel</button>
+    </div>
+  </div>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="calendar.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
