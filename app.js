@@ -148,6 +148,7 @@ function finish() {
   state.totalTimeLeft = 0;
   clearInterval(intervalId);
   releaseWakeLock();
+  if (typeof onWorkoutComplete === 'function') onWorkoutComplete();
 }
 
 function readConfig() {
