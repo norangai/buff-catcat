@@ -20,6 +20,9 @@ let intervalId = null;
 let lastTick = 0;
 let wakeLock = null;
 let audioCtx = null;
+let displayedCatPhase = null;
+let exerciseFrame = 1;
+let lastFrameChangeAt = 0;
 
 function totalWorkoutTime(c) {
   const n = c.exercises * c.sets;
@@ -72,6 +75,7 @@ document.addEventListener('visibilitychange', () => {
 function render() {
   document.body.classList.toggle('rest', state.phase === 'rest' && state.status !== 'finished');
   document.body.classList.toggle('finished', state.status === 'finished');
+  renderCat();
   if (state.status === 'finished') {
     $('phase').textContent = 'Done!';
     $('countdown').textContent = '00:00';
@@ -90,6 +94,31 @@ function render() {
   const total = totalWorkoutTime(state);
   $('barFill').style.width = `${total ? ((total - state.totalTimeLeft) / total) * 100 : 0}%`;
   $('toggle').textContent = state.status === 'running' ? 'Pause' : 'Resume';
+}
+
+function renderCat() {
+  const image = $('workoutCat');
+  let src;
+  if (state.status === 'finished') {
+    src = 'cats/cat_1_buff.png';
+    displayedCatPhase = 'finished';
+  } else if (state.phase === 'rest') {
+    src = 'cats/cat_1_rest.png';
+    displayedCatPhase = 'rest';
+  } else {
+    const now = Date.now();
+    if (displayedCatPhase !== 'exercise') {
+      exerciseFrame = 1;
+      lastFrameChangeAt = now;
+    } else if (state.status === 'running' && now - lastFrameChangeAt >= 500) {
+      const frameChanges = Math.floor((now - lastFrameChangeAt) / 500);
+      if (frameChanges % 2) exerciseFrame = exerciseFrame === 1 ? 2 : 1;
+      lastFrameChangeAt += frameChanges * 500;
+    }
+    src = `cats/cat_1_exercise_${exerciseFrame}.png`;
+    displayedCatPhase = 'exercise';
+  }
+  if (image.getAttribute('src') !== src) image.setAttribute('src', src);
 }
 
 function isLastInterval() {
@@ -172,6 +201,7 @@ function start() {
     timeLeft: cfg.exerciseTime,
     totalTimeLeft: totalWorkoutTime(cfg),
   });
+  displayedCatPhase = null;
   $('config').hidden = true;
   $('workout').hidden = false;
   beep();
@@ -187,6 +217,7 @@ function toggle() {
     releaseWakeLock();
   } else if (state.status === 'paused') {
     state.status = 'running';
+    lastFrameChangeAt = Date.now();
     requestWakeLock();
     startInterval();
   }
